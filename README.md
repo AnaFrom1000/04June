@@ -1,7 +1,9 @@
 Marks_for_course ={} # Оценки студентов
 Marks_for_course_lect={} # Оценки лекторов
-
+Students_list=[]
+Lecturer_list=[]
 class Student:
+    # Marks_for_course = {}
     def __init__(self, name, surname, gender):
         self.name = name
         self.surname = surname
@@ -12,6 +14,8 @@ class Student:
         self.marks={}
         self.marks_List=[]
         self.average_mark=0
+        Students_list.append(self)
+
     def rate_lect(self, lecturer, course, grade):
         if isinstance(lecturer, Lecturer) and course in lecturer.courses_attached and course in self.courses_in_progress:
             if course in lecturer.dict:
@@ -31,6 +35,14 @@ class Student:
     def __str__(self):
         res = f'Имя: {self.name}\nФамилия: {self.surname}\nСредняя оценка за домашние задания: {self.average_mark}\nКурсы в процессе изучения: {self.courses_in_progress}\nЗавершенные курсы: {self.finished_courses}'
         return res
+
+    def __lt__(self, other):
+        if not isinstance(other, Student):
+            print ("Не студент!")
+            return
+        return self.average_mark<other.average_mark
+
+
 Alex=Student("Alexey", "Petrov", "men")
 Alex.courses_in_progress.append("Math")
 Alex.courses_in_progress.append("IT")
@@ -52,16 +64,25 @@ class Mentor:
 
 
 class Lecturer(Mentor):
-    dict={}
+    dict = {}
     marks = {}
     marks_List = []
     average_mark = 0
+    
+
+
     def __str__(self):
         res=f'Имя: {self.name}\nФамилия: {self.surname}\nСредняя оценка за лекции: {self.average_mark}'
         return res
 
-def __lt__(Lecturer, Student):
-    return Lecturer.average_mark<Student.average_mark
+    def __lt__(self, other):
+        if not isinstance(other, Lecturer):
+            print ("Не лектор!")
+            return
+        return self.average_mark<other.average_mark
+
+
+
 
 
 
@@ -123,12 +144,15 @@ Alex.rate_lect(Antony, "IT", 10)
 Alex.rate_lect(Antony, "English", 5)
 print(Antony.dict)
 print(Antony.average_mark)
-print(Antony<Alex)
-print(Alex)
+print(Antony<Oleg)
+print(Olga)
 print(Antony)
 print(Peter)
 
 print(Marks_for_course)
+
+print(Olga>Alex)
+
 def Average_mark_stud(course):
     print (sum(Marks_for_course[course])/len(Marks_for_course[course]))
 Average_mark_stud('IT')
@@ -136,3 +160,6 @@ Average_mark_stud('IT')
 def Average_mark_lect(course):
     print (sum(Marks_for_course_lect[course])/len(Marks_for_course_lect[course]))
 Average_mark_lect('IT')
+
+print(Alex.grades)
+print(Students_list[1])
